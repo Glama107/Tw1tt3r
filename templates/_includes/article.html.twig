@@ -69,8 +69,14 @@
                       class="ml-2 {% for like in app.user.likes %}{% if like.likedPost == article %}text-red-500{% endif %}{% endfor %}">{{ article.likes|length }}</span>
             </button>
             <a href="{{ path('app_article', {'id': article.id}) }}"
-               class="flex ml-4 text-gray-500 dark:text-gray-400 hover:text-blue-500">
-                <img src="{{ asset('svg/comment.svg') }}" alt="">
+               class="flex ml-4 text-gray-500 dark:text-gray-400">
+                <style>
+                    .comment:hover {
+                        filter: invert(44%) sepia(59%) saturate(404%) hue-rotate(81deg) brightness(90%) contrast(98%);
+                        transition: all 0.2s ease;
+                    }
+                </style>
+                <img class="comment" src="{{ asset('svg/comment.svg') }}" alt="">
 
                 <span class="ml-2">{{ article.comments|length }}</span>
             </a>
