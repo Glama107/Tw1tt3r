@@ -6,68 +6,9 @@
 
     {{ include('_includes/navigation.html.twig') }}
     <div class="max-w-xl mx-auto mt-28">
-        <div class="border border-gray-200 rounded-lg p-4 my-4">
-            <div class="flex items-center">
-                <img class="w-12 h-12 rounded-full mr-4" src="https://picsum.photos/id/1005/200/200"
-                     alt="John Doe's avatar">
-                <div>
-                    <h2 class="font-bold">{{ article.createdBy.pseudo }}</h2>
-                    <p class="text-gray-500">Posté le {{ article.createdAt|date("d/m/Y à H:i") }}</p>
-                </div>
-            </div>
-            <p class="mt-4">{{ article.content }}</p>
-            <div class="flex items-center mt-4">
-                <button class="text-gray-500 hover:text-blue-500">
-                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                         stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20.84 4.22a5.5 5.5 0 0 0-7.78 0L12 5.45l-1.06-1.23a5.5 5.5 0 0 0-7.78 0 5.5 5.5 0 0 0 0 7.78L12 21.71l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"></path>
-                    </svg>
-                    <span class="ml-2">{{ article.likes|length }}</span>
-                </button>
-                <button class="ml-4 text-gray-500 hover:text-blue-500">{{ article.comments|length }} Comments</button>
-            </div>
-            <div class="mt-4">
-                {% for comment in article.comments %}
-                    <div class="border border-gray-200 rounded-lg p-4 my-4">
-                        <div class="flex items-center">
-                            <img class="w-8 h-8 rounded-full mr-4" src="https://picsum.photos/id/1006/200/200"
-                                 alt="Jane Doe's avatar">
-                            <div>
-                                <h3 class="font-bold">Jane Doe</h3>
-                                <p class="text-gray-500">April 28, 2023 at 2:35 PM</p>
-                            </div>
-                        </div>
-                        <p class="mt-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod ante vitae
-                            elit
-                            posuere, non pellentesque nisl hendrerit.</p>
-                    </div>
-                {% endfor %}
-
-            </div>
-        </div>
+        {{ include('_includes/article.html.twig') }}
         {% if app.user %}
-            <div class="border border-gray-200 rounded-lg p-4 my-4">
-                <div class="flex items-center">
-                    <img class="w-12 h-12 rounded-full mr-4" src="https://picsum.photos/id/1008/200/200"
-                         alt="Sarah Johnson's avatar">
-                    <div>
-                        <h2 class="font-bold">{{ app.user.pseudo }}</h2>
-                    </div>
-                </div>
-                <form class="mt-4">
-                    <div class="mb-4">
-                        <label class="block text-gray-700 font-bold mb-2" for="comment_content">Comment:</label>
-                        <textarea
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                id="comment_content" name="comment_content" placeholder="Enter your comment"></textarea>
-                    </div>
-                    <div class="flex items-center">
-                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                type="submit">Post Comment
-                        </button>
-                    </div>
-                </form>
-            </div>
+            {{ include('_includes/create-comment.html.twig') }}
         {% endif %}
     </div>
 {% endblock %}

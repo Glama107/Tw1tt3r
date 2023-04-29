@@ -3,21 +3,85 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Comment;
+use App\Entity\Like;
 use App\Form\CreateArticleType;
+use App\Form\CreateCommentType;
 use App\Repository\ArticleRepository;
+use App\Repository\CommentRepository;
+use App\Repository\LikeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ArticleController extends AbstractController
 {
-    #[Route('/article/new', name: 'app_create_article')]
-    public function index(Request $request, ArticleRepository $articleRepository): RedirectResponse
+    #[Route('/article/{id}', name: 'app_article')]
+    public function article(Article $article, Request $request, CommentRepository $commentRepository): Response
     {
+        $comment = new Comment();
+        $form = $this->createForm(CreateCommentType::class, $comment);
+        $form->handleRequest($request);
 
-        return $this->redirectToRoute('app_main');
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setCreatedBy($this->getUser());
+            $comment->setCreatedAt(new \DateTimeImmutable());
+            $comment->setCommentedPost($article);
+
+            $commentRepository->save($comment, true);
+        }
+
+        return $this->render('main/article-details.html.twig', [
+            'article' => $article,
+            'form' => $form->createView(),
+        ]);
     }
+
+    #[Route('/article/{id}/delete', name: 'app_article_delete')]
+    public function articleDelete(Article $article, ArticleRepository $articleRepository, Request $request): Response
+    {
+        if ($this->getUser() == $article->getCreatedBy()) {
+            $articleRepository->remove($article, true);
+            $this->addFlash('success', 'Article supprimé avec succès !');
+        }
+        $route = $request->headers->get('referer');
+        return $this->redirect($route);
+    }
+
+    #[Route('/article/{id}/like', name: 'app_article_like', methods: ['POST'])]
+    public function likeArticle(Article $article, LikeRepository $likeRepository): JsonResponse
+    {
+        $user = $this->getUser();
+        if ($user === null) {
+            return $this->json(['likes' => $article->getLikes()->count()]);
+        }
+        foreach ($article->getLikes() as $like) {
+            if ($like->getLikedBy() === $user) {
+                $likeRepository->remove($like, true);
+                return $this->json(['likes' => $article->getLikes()->count()]);
+            } else {
+                $like = new Like();
+                $like->setLikedBy($this->getUser());
+                $like->setLikedPost($article);
+                $like->setCreatedAt(new \DateTimeImmutable());
+
+                $likeRepository->save($like, true);
+
+                return $this->json(['likes' => $article->getLikes()->count() + 1]);
+            }
+        }
+        $like = new Like();
+        $like->setLikedBy($this->getUser());
+        $like->setLikedPost($article);
+        $like->setCreatedAt(new \DateTimeImmutable());
+
+        $likeRepository->save($like, true);
+
+        return $this->json(['likes' => $article->getLikes()->count() + 1]);
+    }
+
 }
 

@@ -1,13 +1,18 @@
-<div class="border border-gray-200 rounded-lg p-4 my-4">
+<div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4 my-4">
     <div class="flex items-center">
-        <img class="w-8 h-8 rounded-full mr-4"
-             src="https://picsum.photos/id/1006/200/200"
-             alt="Jane Doe's avatar">
+        {% if comment.createdBy.profilePicture %}
+            <img class="w-8 h-8 rounded-full mr-4"
+                 src="{{ asset('uploads/profile_pictures/') }}{{ comment.createdBy.profilePicture }}"
+                 alt="Jane Doe's avatar">
+        {% else %}
+            <img class="w-8 h-8 rounded-full mr-4"
+                 src="https://ui-avatars.com/api/?background=random&name={{ comment.createdBy.pseudo }}"
+                 alt="Jane Doe's avatar">
+        {% endif %}
         <div>
-            <h4 class="font-bold">Jane Doe</h4>
-            <p class="text-gray-500">April 28, 2023 at 2:35 PM</p>
+            <h4 class="font-bold dark:text-gray-200">{{ comment.createdBy.pseudo }}</h4>
+            <p class="text-gray-500">Le {{ comment.createdAt|date('d/m/Y à H:i') }}</p>
         </div>
     </div>
-    <p class="mt-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod
-        ante vitae elit posuere, non pellentesque nisl hendrerit.</p>
+    <p class="mt-4 dark:text-gray-200">{{ comment.content }}</p>
 </div>

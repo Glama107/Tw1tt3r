@@ -1,0 +1,29 @@
+<div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4 my-4">
+    <div class="flex items-center">
+        {% if app.user.profilePicture %}
+            <img class="w-12 h-12 rounded-full mr-4"
+                 src="{{ asset('uploads/profile_pictures/') }}{{ app.user.profilePicture }}"
+                 alt="Sarah Johnson's avatar">
+        {% else %}
+            <img class="w-12 h-12 rounded-full mr-4"
+                 src="https://ui-avatars.com/api/?background=random&name={{ app.user.pseudo }}"
+                 alt="John Doe's avatar">
+        {% endif %}
+        <div>
+            <h2 class="font-bold dark:text-gray-200">{{ app.user.pseudo }}</h2>
+        </div>
+    </div>
+    {{ form_start(form) }}
+    <div class="mt-4">
+        <div class="mb-4">
+            <label class="block text-gray-700 font-bold mb-2" for="comment_content">Comment:</label>
+            {{ form_widget(form.content) }}
+        </div>
+        <div class="flex items-center">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    type="submit">Post Comment
+            </button>
+        </div>
+    </div>
+    {{ form_end(form) }}
+</div>

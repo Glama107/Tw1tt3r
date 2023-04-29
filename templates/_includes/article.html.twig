@@ -1,5 +1,5 @@
 {% set isLiked = false %}
-<li class="border border-gray-200 dark:border-gray-600 rounded-lg p-4 my-4 relative">
+<li class="border border-gray-200 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 rounded-lg p-4 my-4 relative">
     <div class="flex items-center">
         {% if article.createdBy.profilePicture %}
             <img class="w-12 h-12 rounded-full mr-4 object-cover"
@@ -11,7 +11,16 @@
                  alt="John Doe's avatar">
         {% endif %}
         <div>
-            <h3 class="font-bold dark:text-gray-200">{{ article.createdBy.pseudo }}</h3>
+            {% if app.user == article.createdBy %}
+                <a href="{{ path('app_profile') }}">
+                    <h3 class="font-bold dark:text-gray-200 hover:opacity-75 transition duration-150 ease-in-out">{{ article.createdBy.pseudo }}</h3>
+                </a>
+            {% else %}
+                <a href="{{ path('app_profile_id', {'pseudo': article.createdBy.pseudo}) }}">
+                    <h3 class="font-bold dark:text-gray-200 hover:opacity-75 transition duration-150 ease-in-out">{{ article.createdBy.pseudo }}</h3>
+                </a>
+            {% endif %}
+
             <p class="text-gray-500 dark:text-gray-400">Posté
                 le {{ article.createdAt|date("d/m/Y à H:i") }}</p>
         </div>
