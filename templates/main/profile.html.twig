@@ -4,9 +4,9 @@
 
 {% block body %}
     {{ include('_includes/navigation.html.twig') }}
-    <div class="flex flex-col items-center">
+    <div class="flex flex-col items-center pt-16" style="height: 100vh; overflow: hidden">
         <!-- Profile header -->
-        <div class="w-full bg-white py-8 px-4 sm:px-6 lg:px-8">
+        <div class="w-full bg-white dark:bg-gray-700 py-8 px-4 sm:px-6 lg:px-8">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="sm:flex sm:items-center sm:justify-between">
                     <div class="mb-4 sm:mb-0 flex items-center">
@@ -26,7 +26,7 @@
                                      alt="John Doe's avatar">
                             {% else %}
                                 <img class="h-24 w-24 rounded-full mr-4 cursor-pointer object-cover"
-                                     src="https://ui-avatars.com/api/?background=random&name={{ user.profilePicture }}"
+                                     src="https://ui-avatars.com/api/?background=random&name={{ user.pseudo }}"
                                      alt="John Doe's avatar">
                             {% endif %}
                             <div class="absolute inset-0 bg-gray-800 opacity-0 rounded-full w-24 hover:opacity-75 cursor-pointer">
@@ -49,8 +49,9 @@
                         </label>
                         {{ form_end(form) }}
                         <div class="text-left">
-                            <h1 class="text-3xl font-bold text-gray-900">{{ user.firstname }}</h1>
-                            <h2 class="text-xl font-semibold text-gray-900">{{ user.pseudo }}</h2>
+                            <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-200">{{ user.firstname }}</h1>
+                            <h2 class="text-sm font-semibold text-gray-900 dark:text-gray-200">
+                                @{{ user.pseudo|lower }}</h2>
                         </div>
                     </div>
                 </div>
@@ -58,33 +59,56 @@
         </div>
 
         <!-- Profile content -->
-        <div class="w-full px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex w-full px-4 sm:px-6 lg:px-8 py-8">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="flex justify-between mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">{{ user.articles|length }} Articles</h2>
+                    <h2 class="text-lg font-bold text-gray-900 dark:text-gray-200">{{ user.articles|length }}
+                        Articles</h2>
                 </div>
-                {% for article in user.articles %}
-                    <div class="border border-gray-200 rounded-lg p-4">
-                        <div class="flex items-center mb-4">
-                            <img class="h-12 w-12 rounded-full mr-4 object-cover"
-                                 src="{{ asset('uploads/profile_pictures/') }}{{ user.profilePicture }}" alt="">
-                            <div class="flex flex-col">
-                                <h3 class="text-gray-900 font-semibold">John Doe</h3>
-                                <p class="text-gray-600">@johndoe</p>
-                            </div>
-                        </div>
-                        <p class="text-gray-800">This is my first article! #coding #tailwindcss</p>
-                        <p class="text-gray-500 text-sm mt-2">3 hours ago</p>
+                {% if user.articles|length == 0 %}
+                    <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+                        <p class="text-sm font-medium text-gray-900 dark:text-gray-200">You have not posted any article
+                            yet.</p>
                     </div>
-                {% endfor %}
+                {% else %}
+                    <div class="overflow-auto pr-4" style="height: 450px">
+                        <div class="flex flex-col gap-5">
+                            {% for article in user.articles %}
+                                <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+                                    <div class="flex items-center mb-4">
+                                        {% if user.profilePicture %}
+                                            <img class="h-12 w-12 rounded-full mr-4 object-cover"
+                                                 src="{{ asset('uploads/profile_pictures/') }}{{ user.profilePicture }}"
+                                                 alt="">
+                                        {% else %}
+                                            <img class="h-12 w-12 rounded-full mr-4 object-cover"
+                                                 src="https://ui-avatars.com/api/?background=random&name={{ user.pseudo }}"
+                                                 alt="">
+                                        {% endif %}
+
+                                        <div class="flex flex-col">
+                                            <h3 class="text-gray-900 dark:text-gray-200 font-semibold">John Doe</h3>
+                                            <p class="text-gray-600 dark:text-gray-500">@johndoe</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-800 dark:text-gray-300">This is my first article! #coding
+                                        #tailwindcss</p>
+                                    <p class="text-gray-500 text-sm mt-2">{{ article.createdAt|date("d/m/Y à H:i") }}</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
             </div>
 
-            <div class="max-w-7xl mx-auto mt-8 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="flex justify-between mb-4">
-                    <h2 class="text-lg font-bold text-gray-900">{{ user.likes|length }} Liked Articles</h2>
+                    <h2 class="text-lg font-bold text-gray-900 dark:text-gray-200">{{ user.likes|length }} Liked
+                        Articles</h2>
                 </div>
-                <div class="border border-gray-200 rounded-lg p-4">
-                    <p class="text-sm font-medium text-gray-900">You have not liked any article yet.</p>
+                <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+                    <p class="text-sm font-medium text-gray-900 dark:text-gray-200">You have not liked any article
+                        yet.</p>
                 </div>
             </div>
         </div>

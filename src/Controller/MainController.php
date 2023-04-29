@@ -67,8 +67,18 @@ class MainController extends AbstractController
     #[Route('/article/{id}', name: 'app_article')]
     public function article(Article $article): Response
     {
-        return $this->render('main/article.html.twig', [
+        return $this->render('main/article-details.html.twig', [
             'article' => $article,
         ]);
+    }
+
+    #[Route('/article/{id}/delete', name: 'app_article_delete')]
+    public function articleDelete(Article $article, ArticleRepository $articleRepository): Response
+    {
+        if ($this->getUser() == $article->getCreatedBy()) {
+            $articleRepository->remove($article, true);
+            $this->addFlash('success', 'Article supprimé avec succès !');
+        }
+        return $this->redirectToRoute('app_main');
     }
 }

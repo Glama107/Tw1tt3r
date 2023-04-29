@@ -18,10 +18,10 @@ class CreateArticleType extends AbstractType
             ->add('content', TextareaType::class, [
                 'label' => 'Article content',
                 'attr' => [
-                    'placeholder' => 'Enter your tweet',
+                    'placeholder' => 'Enter your message',
                     'rows' => 5,
                     'cols' => 50,
-                    'class' => 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                    'class' => 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-gray-200 dark:bg-gray-700 dark:border-gray-600 leading-tight focus:outline-none focus:shadow-outline'
                 ],
             ]);
     }
