@@ -4,6 +4,7 @@
 
 {% block body %}
     {{ include('_includes/navigation.html.twig') }}
+    {% set isMore3CommentToDisplay = false %}
     <div class="max-w-xl mx-auto mt-28">
         {% if app.user and app.user.verified %}
             <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4 my-4">

@@ -5,6 +5,7 @@
 {% block body %}
 
     {{ include('_includes/navigation.html.twig') }}
+    {% set isMore3CommentToDisplay = true %}
     <div class="max-w-xl mx-auto mt-28">
         {{ include('_includes/article.html.twig') }}
         {% if app.user %}

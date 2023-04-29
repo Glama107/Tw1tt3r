@@ -77,8 +77,14 @@
         </div>
     {% endif %}
     <div class="mt-4">
-        {% for comment in article.comments %}
-            {{ include('_includes/comment.html.twig') }}
-        {% endfor %}
+        {% if isMore3CommentToDisplay %}
+            {% for comment in article.comments %}
+                {{ include('_includes/comment.html.twig') }}
+            {% endfor %}
+        {% else %}
+            {% for comment in article.comments|slice(0, 3) %}
+                {{ include('_includes/comment.html.twig') }}
+            {% endfor %}
+        {% endif %}
     </div>
 </li>
