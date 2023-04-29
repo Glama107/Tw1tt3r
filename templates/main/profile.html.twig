@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ user.pseudo }}!{% endblock %}
+
+{% block body %}
+    {{ include('_includes/navigation.html.twig') }}
+    <div class="flex flex-col items-center">
+        <!-- Profile header -->
+        <div class="w-full bg-white py-8 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="sm:flex sm:items-center sm:justify-between">
+                    <div class="mb-4 sm:mb-0 flex items-center">
+                        {{ form_start(form) }}
+                        {{ form_widget(form.profilePicture) }}
+                        <script>
+                            const input = document.querySelector('#profile_picture_profilePicture');
+                            input.addEventListener('change', () => {
+                                const form = input.closest('form');
+                                form.submit();
+                            });
+                        </script>
+                        <label for="profile_picture_profilePicture" class="relative">
+                            {% if user.profilePicture %}
+                                <img class="h-24 w-24 rounded-full mr-4 cursor-pointer object-cover"
+                                     src="{{ asset('uploads/profile_pictures/') }}{{ user.profilePicture }}"
+                                     alt="John Doe's avatar">
+                            {% else %}
+                                <img class="h-24 w-24 rounded-full mr-4 cursor-pointer object-cover"
+                                     src="https://ui-avatars.com/api/?background=random&name={{ user.profilePicture }}"
+                                     alt="John Doe's avatar">
+                            {% endif %}
+                            <div class="absolute inset-0 bg-gray-800 opacity-0 rounded-full w-24 hover:opacity-75 cursor-pointer">
+                                <div class="flex items-center justify-center h-full">
+                                    <span class="text-white text-4xl">
+                                        <span class="text-white text-4xl">
+                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                             xmlns:xlink="http://www.w3.org/1999/xlink" width="23.2571"
+                                             height="24.0044">
+                                         <g>
+                                          <rect height="24.0044" opacity="0" width="23.2571" x="0" y="0"/>
+                                          <path d="M3.65207 22.6134L20.2375 6.04265L18.0554 3.84596L1.45993 20.4177L0.0274575 23.4744C-0.0952964 23.7715 0.216423 24.1045 0.508952 23.9761ZM21.4039 4.90095L22.7245 3.60514C23.4034 2.92165 23.4282 2.22497 22.828 1.61471L22.4798 1.26652C21.8933 0.679994 21.1785 0.748696 20.5131 1.39381L19.1971 2.69518Z"
+                                                fill="#ffffff" fill-opacity="0.85"/>
+                                         </g>
+                                        </svg>
+                                    </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </label>
+                        {{ form_end(form) }}
+                        <div class="text-left">
+                            <h1 class="text-3xl font-bold text-gray-900">{{ user.firstname }}</h1>
+                            <h2 class="text-xl font-semibold text-gray-900">{{ user.pseudo }}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile content -->
+        <div class="w-full px-4 sm:px-6 lg:px-8 py-8">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="flex justify-between mb-4">
+                    <h2 class="text-lg font-bold text-gray-900">{{ user.articles|length }} Articles</h2>
+                </div>
+                {% for article in user.articles %}
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center mb-4">
+                            <img class="h-12 w-12 rounded-full mr-4 object-cover"
+                                 src="{{ asset('uploads/profile_pictures/') }}{{ user.profilePicture }}" alt="">
+                            <div class="flex flex-col">
+                                <h3 class="text-gray-900 font-semibold">John Doe</h3>
+                                <p class="text-gray-600">@johndoe</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-800">This is my first article! #coding #tailwindcss</p>
+                        <p class="text-gray-500 text-sm mt-2">3 hours ago</p>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="max-w-7xl mx-auto mt-8 sm:px-6 lg:px-8">
+                <div class="flex justify-between mb-4">
+                    <h2 class="text-lg font-bold text-gray-900">{{ user.likes|length }} Liked Articles</h2>
+                </div>
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <p class="text-sm font-medium text-gray-900">You have not liked any article yet.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
