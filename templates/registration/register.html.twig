@@ -3,6 +3,7 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
+    {{ include('_includes/navigation.html.twig') }}
     <div class="flex justify-center items-center h-screen bg-gray-100 dark:bg-gray-800">
 
         <div class="bg-white dark:bg-gray-900 rounded-lg shadow-md p-8 max-w-md w-full">
@@ -44,7 +45,7 @@
                        class="block text-gray-700 dark:text-gray-200 font-bold mb-2">Password</label>
                 {{ form_row(registrationForm.plainPassword) }}
             </div>
-            
+
             <div class="mb-4">
                 <label class="inline-flex items-center">
                     {{ form_row(registrationForm.agreeTerms) }}

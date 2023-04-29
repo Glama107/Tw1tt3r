@@ -74,7 +74,7 @@
                     <div class="overflow-auto pr-4" style="height: 450px">
                         <div class="flex flex-col gap-5">
                             {% for article in user.articles %}
-                                <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+                                <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4 w-96">
                                     <div class="flex items-center mb-4">
                                         {% if user.profilePicture %}
                                             <img class="h-12 w-12 rounded-full mr-4 object-cover"
@@ -87,13 +87,14 @@
                                         {% endif %}
 
                                         <div class="flex flex-col">
-                                            <h3 class="text-gray-900 dark:text-gray-200 font-semibold">John Doe</h3>
-                                            <p class="text-gray-600 dark:text-gray-500">@johndoe</p>
+                                            <h3 class="text-gray-900 dark:text-gray-200 font-semibold">{{ article.createdBy.firstname }} {{ article.createdBy.lastname }}</h3>
+                                            <p class="text-gray-600 dark:text-gray-500">
+                                                @{{ article.createdBy.pseudo|lower }}</p>
                                         </div>
                                     </div>
-                                    <p class="text-gray-800 dark:text-gray-300">This is my first article! #coding
-                                        #tailwindcss</p>
-                                    <p class="text-gray-500 text-sm mt-2">{{ article.createdAt|date("d/m/Y à H:i") }}</p>
+                                    <p class="text-gray-800 dark:text-gray-300">{{ article.content }}</p>
+                                    <p class="text-gray-500 text-sm mt-2">Créé
+                                        le {{ article.createdAt|date("d/m/Y à H:i") }}</p>
                                 </div>
                             {% endfor %}
                         </div>
@@ -106,10 +107,41 @@
                     <h2 class="text-lg font-bold text-gray-900 dark:text-gray-200">{{ user.likes|length }} Liked
                         Articles</h2>
                 </div>
-                <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
-                    <p class="text-sm font-medium text-gray-900 dark:text-gray-200">You have not liked any article
-                        yet.</p>
-                </div>
+                {% if user.likes|length == 0 %}
+                    <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+                        <p class="text-sm font-medium text-gray-900 dark:text-gray-200">You have not posted any article
+                            yet.</p>
+                    </div>
+                {% else %}
+                    <div class="overflow-auto pr-4" style="height: 450px">
+                        <div class="flex flex-col gap-5">
+                            {% for like in user.likes %}
+                                <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4 w-96">
+                                    <div class="flex items-center mb-4">
+                                        {% if like.likedPost.createdBy.profilePicture %}
+                                            <img class="h-12 w-12 rounded-full mr-4 object-cover"
+                                                 src="{{ asset('uploads/profile_pictures/') }}{{ like.likedPost.createdBy.profilePicture }}"
+                                                 alt="">
+                                        {% else %}
+                                            <img class="h-12 w-12 rounded-full mr-4 object-cover"
+                                                 src="https://ui-avatars.com/api/?background=random&name={{ like.likedPost.createdBy.pseudo }}"
+                                                 alt="">
+                                        {% endif %}
+
+                                        <div class="flex flex-col">
+                                            <h3 class="text-gray-900 dark:text-gray-200 font-semibold">{{ like.likedPost.createdBy.firstname }} {{ like.likedPost.createdBy.lastname }}</h3>
+                                            <p class="text-gray-600 dark:text-gray-500">
+                                                @{{ like.likedPost.createdBy.pseudo|lower }}</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-800 dark:text-gray-300">{{ like.likedPost.content }}</p>
+                                    <p class="text-gray-500 text-sm mt-2">Liké
+                                        le {{ like.createdAt|date("d/m/Y à H:i") }}</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>

@@ -3,11 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Like;
 use App\Form\CreateArticleType;
 use App\Form\ProfilePictureType;
 use App\Repository\ArticleRepository;
+use App\Repository\LikeRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -36,7 +39,7 @@ class MainController extends AbstractController
     }
 
     #[Route('/profile', name: 'app_profile')]
-    public function profile(Request $request, UserRepository $userRepository): Response
+    public function profile(Request $request, UserRepository $userRepository, ArticleRepository $articleRepository): Response
     {
         $user = $this->getUser();
         $form = $this->createForm(ProfilePictureType::class, $user);
@@ -61,6 +64,7 @@ class MainController extends AbstractController
         return $this->render('main/profile.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
+            'articles' => $articleRepository->findAll(),
         ]);
     }
 
@@ -80,5 +84,38 @@ class MainController extends AbstractController
             $this->addFlash('success', 'Article supprimé avec succès !');
         }
         return $this->redirectToRoute('app_main');
+    }
+
+
+    #[Route('/article/{id}/like', name: 'app_article_like', methods: ['POST'])]
+    public function likeArticle(Article $article, LikeRepository $likeRepository): JsonResponse
+    {
+        $user = $this->getUser();
+        if ($user === null) {
+            return $this->json(['likes' => $article->getLikes()->count()]);
+        }
+        foreach ($article->getLikes() as $like) {
+            if ($like->getLikedBy() === $user) {
+                $likeRepository->remove($like, true);
+                return $this->json(['likes' => $article->getLikes()->count()]);
+            } else {
+                $like = new Like();
+                $like->setLikedBy($this->getUser());
+                $like->setLikedPost($article);
+                $like->setCreatedAt(new \DateTimeImmutable());
+
+                $likeRepository->save($like, true);
+
+                return $this->json(['likes' => $article->getLikes()->count() + 1]);
+            }
+        }
+        $like = new Like();
+        $like->setLikedBy($this->getUser());
+        $like->setLikedPost($article);
+        $like->setCreatedAt(new \DateTimeImmutable());
+
+        $likeRepository->save($like, true);
+
+        return $this->json(['likes' => $article->getLikes()->count() + 1]);
     }
 }
