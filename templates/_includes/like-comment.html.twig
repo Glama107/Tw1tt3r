@@ -1,0 +1,23 @@
+{% for like in comment.likes %}
+    {% if like.likedBy == app.user %}
+        {% set isLiked = true %}
+    {% endif %}
+{% endfor %}
+<div class="flex items-center mt-4">
+    <button id="like-comment-button" data-comment-id="{{ comment.id }}" data-article-id="{{ article.id }}"
+            class="flex text-gray-500 dark:text-gray-400">
+        {% if isLiked %}
+            <img id="likedImage" src="{{ asset('svg/heart-like.svg') }}" alt="">
+        {% else %}
+            <style>
+                .image:hover {
+                    filter: invert(55%) sepia(12%) saturate(2982%) hue-rotate(314deg) brightness(97%) contrast(107%);
+                    transition: all 0.2s ease;
+                }
+            </style>
+            <img id="nonLikedImage" class="image" src="{{ asset('svg/heart.svg') }}" alt="">
+        {% endif %}
+        <span id="like-count"
+              class="ml-2 {% for like in app.user.likes %}{% if like.likedComment == comment %}text-red-500{% endif %}{% endfor %}">{{ comment.likes|length }}</span>
+    </button>
+</div>
