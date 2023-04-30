@@ -1,0 +1,19 @@
+<div class="w-full bg-gray-200 dark:bg-gray-700 py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="sm:flex sm:items-center sm:justify-between">
+            <div class="mb-4 sm:mb-0 flex items-center">
+                {% if app.user == user %}
+                    {{ include('profile/header/profile-change-picture.html.twig') }}
+                {% else %}
+                    {{ include('profile/header/profile-picture.html.twig') }}
+                {% endif %}
+                <div class="text-left">
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-200">{{ user.firstname }} {{ user.lastname }} {% if app.user == user %}(You){% endif %}</h1>
+                    <h2 class="text-sm font-semibold text-gray-900 dark:text-gray-200">
+                        @{{ user.pseudo|lower }}</h2>
+                    <h3 class="text-gray-400 pt-2">Active since {{ user.createdAt|date("d/m/Y") }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

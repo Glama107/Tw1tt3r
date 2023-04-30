@@ -1,0 +1,24 @@
+<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="flex justify-between mb-4">
+        <h2 class="text-lg font-bold text-gray-900 dark:text-gray-200">{{ user.likes|length }}
+            Liked
+            Articles</h2>
+    </div>
+    {% if user.likes|length == 0 %}
+        <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+            <p class="text-sm font-medium text-gray-900 dark:text-gray-200">{% if app.user == user %}You{% else %}{{ user.pseudo }}{% endif %}
+                have not posted any article
+                yet.</p>
+        </div>
+    {% else %}
+        <div class="overflow-auto pr-4" style="height: 450px">
+            <div class="flex flex-col gap-5">
+                {% for like in user.likes %}
+                    {% if like.likedPost %}
+                        {{ include('profile/likedArticles/profile-article-liked.html.twig') }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+</div>

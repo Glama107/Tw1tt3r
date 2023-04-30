@@ -1,0 +1,11 @@
+<label for="profile_picture_profilePicture" class="relative">
+    {% if user.profilePicture %}
+        <img class="h-24 w-24 rounded-full mr-4 object-cover"
+             src="{{ asset('uploads/profile_pictures/') }}{{ user.profilePicture }}"
+             alt="John Doe's avatar">
+    {% else %}
+        <img class="h-24 w-24 rounded-full mr-4 object-cover"
+             src="https://ui-avatars.com/api/?background=random&name={{ user.pseudo }}"
+             alt="John Doe's avatar">
+    {% endif %}
+</label>

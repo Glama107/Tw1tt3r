@@ -36,7 +36,7 @@ class ProfileController extends AbstractController
                 $userRepository->save($user, true);
             }
         }
-        return $this->render('main/profile.html.twig', [
+        return $this->render('profile/profile.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
             'articles' => $articleRepository->findAll(),
@@ -46,7 +46,7 @@ class ProfileController extends AbstractController
     #[Route('/profile/{pseudo}', name: 'app_profile_id')]
     public function profileId(User $user, ArticleRepository $articleRepository): Response
     {
-        return $this->render('main/profile.html.twig', [
+        return $this->render('profile/profile.html.twig', [
             'user' => $user,
             'articles' => $articleRepository->findAll(),
         ]);

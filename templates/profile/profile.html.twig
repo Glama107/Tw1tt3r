@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ user.pseudo }}!{% endblock %}
+
+{% block body %}
+    {{ include('_includes/navigation.html.twig') }}
+
+    <div class="flex flex-col items-center pt-16" style="height: 100vh; overflow: hidden">
+        {{ include('profile/header/profile-header.html.twig') }}
+        {{ include('profile/profile-content.html.twig') }}
+    </div>
+
+{% endblock %}
