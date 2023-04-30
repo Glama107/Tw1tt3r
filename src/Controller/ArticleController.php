@@ -41,9 +41,14 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/article/{id}/delete', name: 'app_article_delete')]
-    public function articleDelete(Article $article, ArticleRepository $articleRepository, Request $request): Response
+    public function articleDelete(Article $article, ArticleRepository $articleRepository, Request $request, LikeRepository $likeRepository): Response
     {
         if ($this->getUser() == $article->getCreatedBy()) {
+            if ($article->getLikes() != null) {
+                foreach ($article->getLikes() as $like) {
+                    $likeRepository->remove($like, true);
+                }
+            }
             $articleRepository->remove($article, true);
             $this->addFlash('success', 'Article supprimé avec succès !');
         }
@@ -52,10 +57,15 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/article/{id}/comment/{commentId}/delete', name: 'app_comment_delete')]
-    public function commentDelete($commentId, CommentRepository $commentRepository, Request $request): Response
+    public function commentDelete($commentId, CommentRepository $commentRepository, Request $request, LikeRepository $likeRepository): Response
     {
         $comment = $commentRepository->findOneBy(['id' => $commentId]);
         if ($this->getUser() == $comment->getCreatedBy()) {
+            if ($comment->getLikes() != null) {
+                foreach ($comment->getLikes() as $like) {
+                    $likeRepository->remove($like, true);
+                }
+            }
             $commentRepository->remove($comment, true);
             $this->addFlash('success', 'Commentaire supprimé avec succès !');
         }
