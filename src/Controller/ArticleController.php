@@ -22,6 +22,7 @@ class ArticleController extends AbstractController
     #[Route('/article/{id}', name: 'app_article')]
     public function article(Article $article, Request $request, CommentRepository $commentRepository): Response
     {
+        date_default_timezone_set('Europe/Paris');
         $comment = new Comment();
         $form = $this->createForm(CreateCommentType::class, $comment);
         $form->handleRequest($request);
@@ -34,7 +35,7 @@ class ArticleController extends AbstractController
             $commentRepository->save($comment, true);
         }
 
-        return $this->render('main/article-details.html.twig', [
+        return $this->render('article/article-details.html.twig', [
             'article' => $article,
             'form' => $form->createView(),
         ]);

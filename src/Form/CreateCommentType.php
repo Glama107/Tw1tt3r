@@ -15,7 +15,7 @@ class CreateCommentType extends AbstractType
         $builder
             ->add('content', TextareaType::class, [
                 'attr' => [
-                    'class' => 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline',
+                    'class' => 'shadow dark:bg-gray-700 dark:border-gray-600 appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline',
                     'placeholder' => 'Votre commentaire',
                 ],
                 'label' => false,

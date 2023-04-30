@@ -15,11 +15,11 @@
             <p class="text-gray-500">Le {{ comment.createdAt|date('d/m/Y à H:i') }}</p>
         </div>
         {% if app.user == comment.createdBy %}
-            {{ include('_includes/delete-comment.html.twig') }}
+            {{ include('comment/delete-comment.html.twig') }}
         {% endif %}
     </div>
     <p class="mt-4 dark:text-gray-200">{{ comment.content }}</p>
     {% if app.user %}
-        {{ include('_includes/like-comment.html.twig') }}
+        {{ include('comment/like-comment.html.twig') }}
     {% endif %}
 </div>

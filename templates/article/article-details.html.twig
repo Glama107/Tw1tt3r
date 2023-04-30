@@ -7,9 +7,9 @@
     {{ include('_includes/navigation.html.twig') }}
     {% set isMore3CommentToDisplay = true %}
     <div class="max-w-xl mx-auto mt-28">
-        {{ include('_includes/article.html.twig') }}
+        {{ include('article/article.html.twig') }}
         {% if app.user %}
-            {{ include('_includes/create-comment.html.twig') }}
+            {{ include('comment/create-comment.html.twig') }}
         {% endif %}
     </div>
     <script src="{{ asset('js/like.js') }}"></script>

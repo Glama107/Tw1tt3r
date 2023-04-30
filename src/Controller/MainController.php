@@ -38,4 +38,17 @@ class MainController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    #[Route('/search', name: 'app_search')]
+    public function search(Request $request, ArticleRepository $articleRepository)
+    {
+        $query = $request->query->get('search');
+        $articles = $articleRepository->findBySearch($query);
+        // Perform your search logic here...
+
+        return $this->render('main/search.html.twig', [
+            'query' => $query,
+            'articles' => $articles,
+        ]);
+    }
 }
