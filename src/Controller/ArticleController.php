@@ -51,6 +51,18 @@ class ArticleController extends AbstractController
         return $this->redirect($route);
     }
 
+    #[Route('/article/{id}/comment/{commentId}/delete', name: 'app_comment_delete')]
+    public function commentDelete($commentId, CommentRepository $commentRepository, Request $request): Response
+    {
+        $comment = $commentRepository->findOneBy(['id' => $commentId]);
+        if ($this->getUser() == $comment->getCreatedBy()) {
+            $commentRepository->remove($comment, true);
+            $this->addFlash('success', 'Commentaire supprimé avec succès !');
+        }
+        $route = $request->headers->get('referer');
+        return $this->redirect($route);
+    }
+
     #[Route('/article/{id}/like', name: 'app_article_like', methods: ['POST'])]
     public function likeArticle(Article $article, LikeRepository $likeRepository): JsonResponse
     {
@@ -81,6 +93,39 @@ class ArticleController extends AbstractController
         $likeRepository->save($like, true);
 
         return $this->json(['likes' => $article->getLikes()->count() + 1]);
+    }
+
+    #[Route('/article/{id}/comment/{commentId}/like', name: 'app_comment_like', methods: ['POST'])]
+    public function likeComment($commentId, Article $article, LikeRepository $likeRepository, CommentRepository $commentRepository): JsonResponse
+    {
+        $comment = $commentRepository->findOneBy(['id' => $commentId]);
+        $user = $this->getUser();
+        if ($user === null) {
+            return $this->json(['likes' => $comment->getLikes()->count()]);
+        }
+        foreach ($comment->getLikes() as $like) {
+            if ($like->getLikedBy() === $user) {
+                $likeRepository->remove($like, true);
+                return $this->json(['likes' => $comment->getLikes()->count()]);
+            } else {
+                $like = new Like();
+                $like->setLikedBy($this->getUser());
+                $like->setLikedComment($comment);
+                $like->setCreatedAt(new \DateTimeImmutable());
+
+                $likeRepository->save($like, true);
+
+                return $this->json(['likes' => $comment->getLikes()->count() + 1]);
+            }
+        }
+        $like = new Like();
+        $like->setLikedBy($this->getUser());
+        $like->setLikedComment($comment);
+        $like->setCreatedAt(new \DateTimeImmutable());
+
+        $likeRepository->save($like, true);
+
+        return $this->json(['likes' => $comment->getLikes()->count() + 1]);
     }
 
 }

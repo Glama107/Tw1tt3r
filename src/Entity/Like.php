@@ -23,6 +23,9 @@ class Like
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[ORM\ManyToOne(inversedBy: 'likes')]
+    private ?Comment $likedComment = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +63,18 @@ class Like
     public function setCreatedAt(?\DateTimeImmutable $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getLikedComment(): ?Comment
+    {
+        return $this->likedComment;
+    }
+
+    public function setLikedComment(?Comment $likedComment): self
+    {
+        $this->likedComment = $likedComment;
 
         return $this;
     }
