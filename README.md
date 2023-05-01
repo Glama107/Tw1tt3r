@@ -7,10 +7,10 @@ Tw1tt3r is a Twitter clone built as a school project for YDAYS, where students w
 
 To use Tw1tt3r, you need to have the following installed:
 
--   PHP 7.3 or higher
+-   PHP 8.1 or higher
 -   Composer
--   Symfony 5.3 or higher
--   MySQL  or  PostgreSQL
+-   Symfony 6.2 or higher
+-   MySQL  or  PostgreSQL or SQLite
 
 To install Tw1tt3r, follow these steps:
 
