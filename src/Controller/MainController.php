@@ -27,6 +27,12 @@ class MainController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('image')->getData() != null) {
+                $file = $form->get('image')->getData();
+                $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+                $file->move($this->getParameter('article_images'), $fileName);
+                $article->setImage($fileName);
+            }
             $article->setCreatedAt(new \DateTimeImmutable());
             $article->setCreatedBy($this->getUser());
 

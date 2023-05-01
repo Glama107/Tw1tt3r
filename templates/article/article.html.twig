@@ -43,6 +43,12 @@
 
     </div>
     <p class="mt-4 dark:text-gray-200">{{ article.content }}</p>
+    {% if article.image %}
+        <button id="modal-trigger" data-image-name="{{ article.image }}" class="w-full">
+            <img src="{{ asset('uploads/article_images/') }}{{ article.image }}" alt="Article image"
+                 class="my-5 object-cover w-full" style="max-height: 400px; border-radius: 20px">
+        </button>
+    {% endif %}
     {% if app.user %}
         {% for like in article.likes %}
             {% if like.likedBy == app.user %}

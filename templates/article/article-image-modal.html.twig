@@ -1,0 +1,45 @@
+<!-- Modal -->
+<!-- Modal Overlay -->
+<div id="modal-overlay" class="fixed inset-0 bg-gray-900 opacity-90 cursor-pointer hidden"></div>
+<div id="modal" class="fixed z-10 inset-0 overflow-y-auto hidden">
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="relative w-full max-w-lg">
+            <!-- Modal Content: Photo and Close Button -->
+            <div class="bg-gray-900 rounded-lg overflow-hidden">
+                <img id="image-modal" src="https://picsum.photos/200/300" alt="Your Photo" class="w-full object-cover"
+                     style="max-height: 80vh;">
+                <button id="modal-close"
+                        class="absolute top-0 right-0 mt-2 mr-2 text-white hover:text-gray-400 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const modalTriggers = document.querySelectorAll("#modal-trigger");
+    const modal = document.getElementById("modal");
+    const modalClose = document.getElementById("modal-close");
+    const modalOverlay = document.getElementById("modal-overlay");
+    const imageModal = document.getElementById("image-modal");
+
+
+    modalTriggers.forEach((button) => {
+        const image = button.getAttribute("data-image-name");
+        button.addEventListener("click", (event) => {
+            imageModal.src = "{{ asset('uploads/article_images/') }}" + image;
+            modal.classList.remove("hidden");
+            modalOverlay.classList.remove("hidden");
+        });
+    });
+
+    modalClose.addEventListener("click", () => {
+        modal.classList.add("hidden");
+        modalOverlay.classList.add("hidden");
+    });
+</script>

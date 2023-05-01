@@ -50,6 +50,9 @@ class ArticleController extends AbstractController
                     $likeRepository->remove($like, true);
                 }
             }
+            if ($article->getImage() != null) {
+                unlink($this->getParameter('article_images') . '/' . $article->getImage());
+            }
             $articleRepository->remove($article, true);
             $this->addFlash('success', 'Article supprimé avec succès !');
         }
