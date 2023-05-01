@@ -29,6 +29,11 @@ class Article
     #[ORM\ManyToOne(inversedBy: 'articles')]
     private ?User $createdBy = null;
 
+    public function __toString(): string
+    {
+        return substr($this->content, 0, 20) . '...';
+    }
+
     public function __construct()
     {
         $this->likes = new ArrayCollection();

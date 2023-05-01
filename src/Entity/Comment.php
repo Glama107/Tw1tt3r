@@ -30,6 +30,11 @@ class Comment
     #[ORM\OneToMany(mappedBy: 'likedComment', targetEntity: Like::class)]
     private Collection $likes;
 
+    public function __toString(): string
+    {
+        return substr($this->content, 0, 20) . '...';
+    }
+
     public function __construct()
     {
         $this->likes = new ArrayCollection();

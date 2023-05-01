@@ -63,6 +63,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $profilePicture = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $admin = null;
+
+    public function __toString(): string
+    {
+        return substr($this->pseudo, 0, 20) . '...';
+    }
+
     public function __construct()
     {
         $this->likes = new ArrayCollection();
@@ -94,7 +102,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -310,6 +318,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setProfilePicture(?string $profilePicture): self
     {
         $this->profilePicture = $profilePicture;
+
+        return $this;
+    }
+
+    public function isAdmin(): ?bool
+    {
+        return $this->admin;
+    }
+
+    public function setAdmin(?bool $admin): self
+    {
+        $this->admin = $admin;
 
         return $this;
     }

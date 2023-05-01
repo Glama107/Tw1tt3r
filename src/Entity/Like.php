@@ -26,6 +26,11 @@ class Like
     #[ORM\ManyToOne(inversedBy: 'likes')]
     private ?Comment $likedComment = null;
 
+    public function __toString(): string
+    {
+        return $this->likedBy . ' liked ' . $this->likedPost;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

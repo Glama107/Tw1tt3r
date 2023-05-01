@@ -1,7 +1,7 @@
 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
     <div class="flex justify-between mb-4">
-        <h2 class="text-lg font-bold text-gray-900 dark:text-gray-200">{{ user.articles|length }}
-            Articles</h2>
+        <h2 class="text-lg font-bold text-gray-900 dark:text-gray-200">
+            Articles created</h2>
     </div>
     {% if user.articles|length == 0 %}
         <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
@@ -12,7 +12,7 @@
     {% else %}
         <div class="overflow-auto pr-4" style="height: 450px">
             <div class="flex flex-col gap-5">
-                {% for article in user.articles %}
+                {% for article in user.articles|reverse %}
                     {{ include('profile/createdArticles/profile-article.html.twig') }}
                 {% endfor %}
             </div>
