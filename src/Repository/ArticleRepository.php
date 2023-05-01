@@ -45,7 +45,12 @@ class ArticleRepository extends ServiceEntityRepository
     public function findBySearch($s): array
     {
         return $this->createQueryBuilder('a')
+            ->leftJoin('a.createdBy', 'u')
+            ->leftJoin('a.comments', 'c')
             ->where('a.content LIKE :val')
+            ->orWhere('u.pseudo LIKE :val')
+            ->orWhere('c.content LIKE :val')
+            ->orWhere('a.createdAt LIKE :val')
             ->setParameter('val', "%$s%")
             ->orderBy('a.id', 'ASC')
             ->getQuery()

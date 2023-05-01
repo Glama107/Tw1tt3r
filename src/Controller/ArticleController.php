@@ -80,6 +80,7 @@ class ArticleController extends AbstractController
     #[Route('/article/{id}/like', name: 'app_article_like', methods: ['POST'])]
     public function likeArticle(Article $article, LikeRepository $likeRepository): JsonResponse
     {
+        date_default_timezone_set('Europe/Paris');
         $user = $this->getUser();
         if ($user === null) {
             return $this->json(['likes' => $article->getLikes()->count()]);
@@ -110,8 +111,9 @@ class ArticleController extends AbstractController
     }
 
     #[Route('/article/{id}/comment/{commentId}/like', name: 'app_comment_like', methods: ['POST'])]
-    public function likeComment($commentId, Article $article, LikeRepository $likeRepository, CommentRepository $commentRepository): JsonResponse
+    public function likeComment($commentId, LikeRepository $likeRepository, CommentRepository $commentRepository): JsonResponse
     {
+        date_default_timezone_set('Europe/Paris');
         $comment = $commentRepository->findOneBy(['id' => $commentId]);
         $user = $this->getUser();
         if ($user === null) {
