@@ -14,7 +14,7 @@ To use Tw1tt3r, you need to have the following installed:
 
 To install Tw1tt3r, follow these steps:
 
-1.  Clone the repository from GitHub:  `git clone https://github.com/yourusername/tw1tt3r.git`
+1.  Clone the repository from GitHub:  `git clone https://github.com/Glama107/tw1tt3r.git`
 2.  Install the dependencies:  `cd tw1tt3r && composer install`
 3.  Create a database and configure the  `.env`  file with your  database credentials
 4.  Run the database migrations:  `php bin/console doctrine:migrations:migrate`
